@@ -24,6 +24,9 @@ class Tree {
     constructor(inputArray) {
         this.root = this.buildTree(inputArray, 0, inputArray.length - 1)
         prettyPrint(this.root)
+        this.inOrderData = []
+        this.preOrderData = []
+        this.postOrderData = []
     }
 
     buildTree(inputArray, start, end) {
@@ -87,7 +90,81 @@ class Tree {
         prettyPrint(this.root)
         return root
     }
+
+    levelOrder(root = this.root) {
+        const queue = []
+        const result = []
+
+        if (root == null) return;
+
+        queue.push(root)
+
+        while (queue.length > 0) {
+            let current = queue.shift(root)
+            result.push(current.data)
+
+            if (current.left !== null) queue.push(current.left)
+            if (current.right !== null) queue.push(current.right)
+        }
+
+        console.log('Level ordered tree:', result);
+        return result
+    }
+
+    inOrder(root = this.root) {
+        if (root == null) return
+
+        if (root.left !== null) {
+            this.inOrder(root.left)
+        }
+
+        if (root.data !== undefined) {
+            this.inOrderData.push(root.data)
+        }
+
+        if (root.data !== null) {
+            this.inOrder(root.right)
+        }
+        console.log(`inOrdered: ${this.inOrderData}`);
+    }
+
+    preOrder(root = this.root) {
+        if (root == null) return
+
+        if (root.data !== undefined) {
+            this.preOrderData.push(root.data)
+        }
+
+        if (root.data !== null) {
+            this.inOrder(root.left)
+        }
+
+        if (root.right !== null) {
+            this.preOrder(root.right)
+        }
+        console.log(`PereOrdered: ${this.preOrderData}`);
+    }
+
+
+    postOrder(root = this.root) {
+        if (root == null) return;
+
+        if (root.left !== null) {
+            this.postOrder(root.left)
+        }
+
+        if (root.right !== null) {
+            this.postOrder(root.right)
+        }
+
+        if (root.data !== undefined) {
+            this.postOrderData.push(root.data)
+        }
+        console.log("postOrder:", `${this.postOrderData}`);
+    }
 }
+
+
 
 let testArray = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
@@ -96,3 +173,7 @@ binaryTree.delete(3)
 binaryTree.insert(11)
 console.log(binaryTree.find(4));       // Node { data: 4, left: null, right: null }
 console.log(binaryTree.find(10));       //false
+binaryTree.levelOrder()
+binaryTree.inOrder()
+binaryTree.preOrder()
+binaryTree.postOrder()
